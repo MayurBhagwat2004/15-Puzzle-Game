@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public int[] currentEmptyTile;
+    public int currentEmptyTileRow;
+    public int currentEmptyTileCol;
     public static GameManager Instance;
     
 
