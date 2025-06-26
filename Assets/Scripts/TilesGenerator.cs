@@ -3,6 +3,7 @@ using TMPro;
 public class TilesGenerator : MonoBehaviour
 {
     public GameManager gameManager;
+    bool randomNumUsed;
     [SerializeField]float xOffset;
     [SerializeField]float yOffset;
     float spacingX = 100f;
@@ -24,13 +25,17 @@ public class TilesGenerator : MonoBehaviour
         Vector2 pos;
         int count = 1;
         TextMeshProUGUI text;
+        int randomTileX,randomTileY;
+        randomTileX = Random.Range(0,4);
+        randomTileY = Random.Range(0,4);
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                if (i == 3 && j == 3)
+                if ((i == randomTileY || j == randomTileX) && !randomNumUsed)
                 {
-                    break;
+                    randomNumUsed = true;
+                    continue;
                 }
                 else
                 {
