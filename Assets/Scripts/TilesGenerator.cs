@@ -4,12 +4,12 @@ public class TilesGenerator : MonoBehaviour
 {
     public GameManager gameManager;
     bool randomNumUsed;
-    [SerializeField]float xOffset;
-    [SerializeField]float yOffset;
+    [SerializeField] float xOffset;
+    [SerializeField] float yOffset;
     float spacingX = 100f;
     float spacingY = 100f;
     [SerializeField] private GameObject tile;
-    public GameObject[,] tiles = new GameObject[4,4]; //creating a tileset of 3x3 order
+    public GameObject[,] tiles = new GameObject[4, 4]; //creating a tileset of 3x3 order
 
     void Start()
     {
@@ -25,16 +25,16 @@ public class TilesGenerator : MonoBehaviour
         Vector2 pos;
         int count = 1;
         TextMeshProUGUI text;
-        int randomTileX,randomTileY;
-        randomTileX = Random.Range(0,4);
-        randomTileY = Random.Range(0,4);
+        int emptyTileX, emptyTileY;
+        emptyTileX = Random.Range(0, 4);
+        emptyTileY = Random.Range(0, 4);
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                if ((i == randomTileY || j == randomTileX) && !randomNumUsed)
+                if (i == emptyTileX && j == emptyTileY)
                 {
-                    randomNumUsed = true;
+                    tiles[i, j] = null;
                     continue;
                 }
                 else
@@ -48,11 +48,11 @@ public class TilesGenerator : MonoBehaviour
                 }
             }
         }
-        gameObject.transform.position = new Vector2(xOffset,yOffset);
+        gameObject.transform.position = new Vector2(xOffset, yOffset);
     }
 
     void Update()
     {
-        
+
     }
 }
