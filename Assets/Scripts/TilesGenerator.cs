@@ -4,17 +4,12 @@ public class TilesGenerator : MonoBehaviour
 {
     public GameManager gameManager;
     bool randomNumUsed;
-<<<<<<< HEAD
-    [SerializeField] float xOffset;
-    [SerializeField] float yOffset;
-=======
     [SerializeField]float xOffset;
     [SerializeField]float yOffset;
->>>>>>> d1e0e2f6b6694b7425f6036bd6ce34baaaeb4342
     float spacingX = 100f;
     float spacingY = 100f;
     [SerializeField] private GameObject tile;
-    public GameObject[,] tiles = new GameObject[4, 4]; //creating a tileset of 3x3 order
+    public GameObject[,] tiles = new GameObject[4,4]; //creating a tileset of 3x3 order
 
     void Start()
     {
@@ -26,50 +21,46 @@ public class TilesGenerator : MonoBehaviour
     }
 
     private void AssignAllTiles()
-    {
-        Vector2 pos;
-        int count = 1;
-        TextMeshProUGUI text;
-<<<<<<< HEAD
-        int emptyTileX, emptyTileY;
-        emptyTileX = Random.Range(0, 4);
-        emptyTileY = Random.Range(0, 4);
-=======
-        int randomTileX,randomTileY;
-        randomTileX = Random.Range(0,4);
-        randomTileY = Random.Range(0,4);
->>>>>>> d1e0e2f6b6694b7425f6036bd6ce34baaaeb4342
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-<<<<<<< HEAD
-                if (i == emptyTileX && j == emptyTileY)
-                {
-                    tiles[i, j] = null;
-=======
-                if ((i == randomTileY || j == randomTileX) && !randomNumUsed)
-                {
-                    randomNumUsed = true;
->>>>>>> d1e0e2f6b6694b7425f6036bd6ce34baaaeb4342
-                    continue;
-                }
-                else
-                {
-                    pos = new Vector2(i * spacingX, j * spacingY);
-                    tiles[i, j] = Instantiate(tile, pos, Quaternion.identity, gameObject.transform);
-                    text = tiles[i, j].GetComponentInChildren<TextMeshProUGUI>();
-                    text.text = count.ToString();
-                    count++;
+{
+    Vector2 pos;
+    int count = 1;
+    TextMeshProUGUI text;
 
-                }
+    int emptyRow = Random.Range(0, 4);
+    int emptyCol = Random.Range(0, 4);
+
+    for (int row = 0; row < 4; row++)
+    {
+        for (int col = 0; col < 4; col++)
+        {
+            if (row == emptyRow && col == emptyCol)
+            {
+                gameManager.currentEmptyTileRow = row;
+                gameManager.currentEmptyTileCol = col;
+                tiles[row, col] = null;
+                continue;
             }
+
+            int flippedRow = 3 - row;
+            pos = new Vector2(col * spacingX, flippedRow * spacingY);
+
+            tiles[row, col] = Instantiate(tile, pos, Quaternion.identity, transform);
+            text = tiles[row, col].GetComponentInChildren<TextMeshProUGUI>();
+            if (text != null)
+            {
+                text.text = count.ToString();
+            }
+
+            count++;
         }
-        gameObject.transform.position = new Vector2(xOffset, yOffset);
     }
+
+    transform.position = new Vector2(xOffset, yOffset);
+}
+
 
     void Update()
     {
-
+        
     }
 }
