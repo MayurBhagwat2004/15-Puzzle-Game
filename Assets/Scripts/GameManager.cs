@@ -1,14 +1,26 @@
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private GameObject[,] tiles = new GameObject[3,3];
-    void Start()
+    public static GameManager Instance;
+    
+
+    void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this; //Assigning the instance
+        }
+        else
+        {
+            Destroy(gameObject); //Destroying the instance if other instance is available
+        }
+        
+
     }
 
-    void Update()
-    {
-        
-    }
+   
+
+   
 }
