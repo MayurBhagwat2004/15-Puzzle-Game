@@ -505,6 +505,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
+  xOffset: 900
+  yOffset: 400
+  tile: {fileID: 7957597489379501569, guid: b655ca37a44f53b4a87ee444a2d3ce5f, type: 3}
 --- !u!1 &1486881080
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,8 +537,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5ff111e993d6a14fb7c3db3b161478c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilesGenerator: {fileID: 0}
-  tile: {fileID: 7957597489379501569, guid: b655ca37a44f53b4a87ee444a2d3ce5f, type: 3}
 --- !u!4 &1486881082
 Transform:
   m_ObjectHideFlags: 0
