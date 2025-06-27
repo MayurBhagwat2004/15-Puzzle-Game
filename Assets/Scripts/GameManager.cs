@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
             RaycastHit2D raycast = Physics2D.Raycast(ray.origin, ray.direction);
             if (raycast)
             {
-                if (Vector2.Distance(emptyTile.position, raycast.transform.position) < 2)
+                if (Vector2.Distance(emptyTile.position, raycast.transform.position) < 1.3)
                 {
                     Vector2 lastEmptySpacePosition = emptyTile.position;
                     Tile tile = raycast.transform.GetComponent<Tile>();
