@@ -1,13 +1,16 @@
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
     private AudioSource audioSource;
-    private AudioClip[] audioClips;
+    [SerializeField] private AudioClip[] audioClips;
+
+    private bool isSoundOn;
     public Tile[] tilePrefabs;
     public Transform emptyTile;
     private Camera _camera;
@@ -21,6 +24,8 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         Instance = this;
+        DontDestroyOnLoad(this);
+        
         Application.targetFrameRate = 90;
         QualitySettings.vSyncCount = 0;
         tilePrefabs = new Tile[15];
@@ -30,12 +35,18 @@ public class GameManager : MonoBehaviour
         // audioSource.clip = audioClips[0];
         // audioSource.Play();
         _camera = Camera.main;
-        Shuffle();
+        isSoundOn = true;
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = audioClips[0];
+        if (audioSource.clip != null)
+        {
+            audioSource.Play();
+        }
     }
 
     private void Update()
     {
-        if (tilesAssigned) //Checking if the all the tiles are assigned or not using flag variable
+        if (tilesAssigned && SceneManager.GetActiveScene().buildIndex > 0) //Checking if the all the tiles are assigned or not using flag variable
             return;
         else
             AssignTiles();  //Calling the assigning method
@@ -65,7 +76,7 @@ public class GameManager : MonoBehaviour
             {
                 tilesAssigned = false; //If the empty tile is not found then setting the flag to false
                 return false;
-            }            
+            }
         }
         else
         {
@@ -106,8 +117,43 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void Sound()
+    public void SendNextLevel()
     {
-        
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+            SceneManager.LoadScene(1);
+
     }
+    public void QuitGame()
+    {
+#if UNITY_STANDALONE
+            Application.Quit();
+#endif
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
+
+    #region Volume Methods
+    public void ChangeVolumeLevel(Slider slider)
+    {
+        audioSource.volume = slider.value;
+    }
+
+
+    public void SoundOn()
+    {
+        if (isSoundOn)
+            return;
+        audioSource.Play();
+        isSoundOn = true;
+    }
+    public void SoundOff()
+    {
+        if (!isSoundOn)
+            return;
+
+        audioSource.Pause();
+        isSoundOn = false;
+    }
+    #endregion
 }
