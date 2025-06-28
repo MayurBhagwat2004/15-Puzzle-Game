@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         Application.targetFrameRate = 90;
         QualitySettings.vSyncCount = 0;
-        tilePrefabs = new Tile[16];
+        tilePrefabs = new Tile[15];
     }
     void Start()
     {
@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         GameObject tilesParent = GameObject.FindWithTag("TilesParent");
         if (tilesParent != null) //Checks if the tilesParent is found or not
         {
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 15; i++)
             {
                 Tile tile = tilesParent.transform.GetChild(i).GetComponent<Tile>();
                 tilePrefabs[i] = tile; //Assigns the tiles to the array of tiles
