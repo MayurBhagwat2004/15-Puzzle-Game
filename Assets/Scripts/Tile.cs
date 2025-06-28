@@ -1,30 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class Tile : MonoBehaviour
+public class Tile : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private Vector2 correctPosition;
-    private SpriteRenderer spriteRenderer;
+    private RawImage spriteRenderer;
     public Vector2 targetPosition;
+
+    private RectTransform rectTransform;
+
     void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        correctPosition = transform.position;
-        targetPosition = transform.position;
+        spriteRenderer = GetComponent<RawImage>();
+        rectTransform = GetComponent<RectTransform>();
+
+        // store everything in anchored space
+        correctPosition = rectTransform.anchoredPosition;
+        targetPosition = rectTransform.anchoredPosition;
     }
 
     void Update()
     {
-        transform.position = Vector2.Lerp(transform.position, targetPosition, 0.05f);
-        if (targetPosition == correctPosition)
+        if (Vector2.Distance(rectTransform.anchoredPosition, targetPosition) > 0.1f)
+        {
+            rectTransform.anchoredPosition = Vector2.Lerp(rectTransform.anchoredPosition,targetPosition,0.2f);
+        }
+
+
+        // compare using Vector2.Distance to avoid floating-point error
+        if (Vector2.Distance(targetPosition, correctPosition) < 1f)
         {
             spriteRenderer.color = Color.green;
         }
         else
         {
             spriteRenderer.color = Color.white;
-            
         }
+    }
+
+    public void OnPointerClick(PointerEventData pointerEventData)
+    {
+        GameManager.Instance.OnTileClick(this);
     }
 }

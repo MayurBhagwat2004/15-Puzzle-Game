@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,31 +7,39 @@ public class GameManager : MonoBehaviour
     public Tile[] tilePrefabs;
     public Transform emptyTile;
     private Camera _camera;
+    public static GameManager Instance;
 
+    void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        Instance = this;
+        Application.targetFrameRate = 90;
+        QualitySettings.vSyncCount = 0;
+    }
     void Start()
     {
         _camera = Camera.main;
         Shuffle();
     }
 
-    void Update()
+
+   public void OnTileClick(Tile tile)
+{
+    RectTransform emptyRect = emptyTile.GetComponent<RectTransform>();
+
+    if (Vector2.Distance(emptyRect.anchoredPosition, tile.targetPosition) < 201)
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D raycast = Physics2D.Raycast(ray.origin, ray.direction);
-            if (raycast)
-            {
-                if (Vector2.Distance(emptyTile.position, raycast.transform.position) < 1.3)
-                {
-                    Vector2 lastEmptySpacePosition = emptyTile.position;
-                    Tile tile = raycast.transform.GetComponent<Tile>();
-                    emptyTile.position = tile.targetPosition;
-                    tile.targetPosition = lastEmptySpacePosition;
-                }
-            }
-        }
+
+        Vector2 lastEmptyPos = emptyRect.anchoredPosition;
+
+        emptyRect.anchoredPosition = tile.targetPosition;
+        tile.targetPosition = lastEmptyPos;
     }
+}
+
 
     private void Shuffle()
     {
@@ -41,9 +50,11 @@ public class GameManager : MonoBehaviour
                 int randomIndex = Random.Range(0, 15);
                 Vector2 lastPos = tilePrefabs[i].targetPosition;
                 tilePrefabs[i].targetPosition = tilePrefabs[randomIndex].targetPosition;
-                tilePrefabs[randomIndex].targetPosition = lastPos; 
+                tilePrefabs[randomIndex].targetPosition = lastPos;
+
             }
 
         }
+
     }
 }
